@@ -1,0 +1,8 @@
+<h2>My Rounds</h2>
+<ul class="rounds">
+    <li *ngFor="let round of rounds" [class.selected]="round === selectedRound" (click)="onSelect(round)">
+        <span class="badge">{{round.id}}</span> {{round.name}}
+    </li>
+</ul>
+
+<app-round-detail [round]="selectedRound"></app-round-detail>

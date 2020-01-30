@@ -1,0 +1,9 @@
+<div *ngIf="round">
+    <h2>{{round.name | uppercase}} Details</h2>
+    <div><span>id: </span>{{round.id}}</div>
+    <div>
+        <label for="">name:
+            <input type="text" placeholder="name" [(ngModel)]="round.name">
+        </label>
+    </div>
+</div>
