@@ -11,20 +11,14 @@ import { RoundService } from '../round.service';
 export class RoundsComponent implements OnInit {
   rounds: Round[];
 
-  selectedRound: Round;
-  onSelect(round: Round): void {
-    this.selectedRound = round;
-  }
-
-  getRounds(): void {
-    this.roundService.getRounds()
-      .subscribe(rounds => this.rounds = rounds);
-  }
-
   constructor(private roundService: RoundService) { }
 
   ngOnInit() {
     this.getRounds();
   }
 
+  getRounds(): void {
+    this.roundService.getRounds()
+      .subscribe(rounds => this.rounds = rounds);
+  }
 }
