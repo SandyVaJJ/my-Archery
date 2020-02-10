@@ -18,6 +18,9 @@ export class RoundService {
     ) { }
 
   private roundsUrl = 'api/rounds'; // URL to web api
+  private httpOptions = {
+    headers: new HttpHeaders({'Content-Type': 'application/json'})
+  };
 
   private log(message: string) {
     this.messageService.add(`RoundService: ${message}`);
@@ -38,6 +41,33 @@ export class RoundService {
         tap(_ => this.log(`fetched round id=${id}`)),
         catchError(this.handleError<Round>(`getRound id=${id}`))
       );
+  }
+
+  /** PUT: update the round on the server */
+  updateRound(round: Round): Observable<any> {
+    return this.http.put(this.roundsUrl, round, this.httpOptions).pipe(
+      tap(_ => this.log(`updated round id=${round.id}`)),
+      catchError(this.handleError<any>('updateRound'))
+    );
+  }
+
+  /** POST: add a new round to the server */
+  addRound(round: Round): Observable<Round> {
+    return this.http.post<Round>(this.roundsUrl, round, this.httpOptions).pipe(
+      tap((newRound: Round) => this.log(`adder round w/ id=${newRound.id}`)),
+      catchError(this.handleError<Round>('addRound'))
+    );
+  }
+
+  /** DELETE: delete round from the server */
+  deleteRound(round: Round|number): Observable<Round> {
+    const id = typeof round === 'number' ? round : round.id;
+    const url = `${this.roundsUrl}/${id}`;
+
+    return this.http.delete<Round>(url, this.httpOptions).pipe(
+      tap(_ => this.log(`deleted round id=${id}`)),
+      catchError(this.handleError<Round>('deleteRound'))
+    );
   }
 
   /**

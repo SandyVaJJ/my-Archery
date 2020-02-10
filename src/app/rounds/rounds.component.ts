@@ -9,9 +9,9 @@ import { RoundService } from '../round.service';
   styleUrls: ['./rounds.component.css']
 })
 export class RoundsComponent implements OnInit {
-  rounds: Round[];
-
   constructor(private roundService: RoundService) { }
+
+  rounds: Round[];
 
   ngOnInit() {
     this.getRounds();
@@ -20,5 +20,18 @@ export class RoundsComponent implements OnInit {
   getRounds(): void {
     this.roundService.getRounds()
       .subscribe(rounds => this.rounds = rounds);
+  }
+
+  add(name: string): void {
+    name = name.trim();
+    if (!name) {return; }
+    this.roundService.addRound({name} as Round)
+      .subscribe(round => {this.rounds.push(round);
+      });
+  }
+
+  delete(round: Round): void {
+    this.rounds = this.rounds.filter(r => r !== round);
+    this.roundService.deleteRound(round).subscribe();
   }
 }

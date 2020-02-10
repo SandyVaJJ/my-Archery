@@ -31,4 +31,9 @@ export class RoundDetailComponent implements OnInit {
   goBack(): void {
     this.location.back();
   }
+
+  save(): void {
+    this.roundService.updateRound(this.round)
+      .subscribe(() => this.goBack());
+  }
 }

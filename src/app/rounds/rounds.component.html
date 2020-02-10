@@ -4,6 +4,15 @@
       <a routerLink="/detail/{{round.id}}">
         <span class="badge">{{round.id}}</span> {{round.name}}
       </a>
+      <button class="delete" title="delete round" (click)="delete(round)">x</button>
     </li>
 </ul>
-
+<div>
+  <label>
+    <input #roundName />
+  </label>
+  <!-- (click) passes input value to add() and then clears the input-->
+  <button (click)="add(roundName.value); roundName.value=''">
+    Add
+  </button>
+</div>
