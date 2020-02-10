@@ -11,7 +11,7 @@ import { RoundService } from '../round.service';
   styleUrls: ['./round-detail.component.css']
 })
 export class RoundDetailComponent implements OnInit {
-  round: Round;
+  @Input() round: Round;
 
   constructor(
     private route: ActivatedRoute,
@@ -25,7 +25,8 @@ export class RoundDetailComponent implements OnInit {
 
   getRound(): void {
     const id = +this.route.snapshot.paramMap.get('id');
-    this.roundService.getRound(id).subscribe(round => this.round = round);
+    this.roundService.getRound(id)
+      .subscribe(round => this.round = round);
   }
 
   goBack(): void {
