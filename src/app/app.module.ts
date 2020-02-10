@@ -12,6 +12,7 @@ import { RoundDetailComponent } from './round-detail/round-detail.component';
 import { MessagesComponent } from './messages/messages.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { RoundSearchComponent } from './round-search/round-search.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     RoundsComponent,
     RoundDetailComponent,
     MessagesComponent,
-    DashboardComponent
+    DashboardComponent,
+    RoundSearchComponent
   ],
   imports: [
     BrowserModule,

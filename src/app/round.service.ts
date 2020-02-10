@@ -5,22 +5,21 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { Round } from './round';
-import { ROUNDS } from './mock-rounds';
 import { MessageService } from './message.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoundService {
-  constructor(
-    private http: HttpClient,
-    private messageService: MessageService
-    ) { }
-
   private roundsUrl = 'api/rounds'; // URL to web api
   private httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
   };
+
+  constructor(
+    private http: HttpClient,
+    private messageService: MessageService
+    ) { }
 
   private log(message: string) {
     this.messageService.add(`RoundService: ${message}`);
@@ -34,6 +33,20 @@ export class RoundService {
       );
   }
 
+  /** GET round by id. Return `undefined` when not found */
+  getRoundNo404<Data>(id: number): Observable<Round> {
+    const url = `${this.roundsUrl}/?id=${id}`;
+    return this.http.get<Round[]>(url).pipe(
+      map(rounds => rounds[0]), // returns a {0|1} element array
+      tap(r => {
+        const outcome = r ? `fetched` : `did not find`;
+        this.log(`${outcome} roound id=${id}`);
+      }),
+      catchError(this.handleError<Round>(`getRound id=${id}`))
+    );
+  }
+
+  /** GET round by id. Will 404 if id not found */
   getRound(id: number): Observable<Round> {
     const url = `${this.roundsUrl}/${id}`;
     return this.http.get<Round>(url)
@@ -67,6 +80,21 @@ export class RoundService {
     return this.http.delete<Round>(url, this.httpOptions).pipe(
       tap(_ => this.log(`deleted round id=${id}`)),
       catchError(this.handleError<Round>('deleteRound'))
+    );
+  }
+
+  /** GET rounds whose name contains search term */
+  searchRounds(term: string): Observable<Round[]> {
+    if (!term.trim()) {
+      // if not search term, return empty round array.
+      return of([]);
+    }
+
+    return this.http.get<Round[]>(`${this.roundsUrl}/?name=${term}`).pipe(
+      tap(x => x.length ?
+        this.log(`found ${x.length} rounds matching "${term}"`) :
+        this.log(`found no rounds matching "${term}"`)),
+        catchError(this.handleError<Round[]>('searchRounds', []))
     );
   }
 

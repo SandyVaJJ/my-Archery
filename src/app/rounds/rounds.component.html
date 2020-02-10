@@ -1,12 +1,5 @@
 <h2>My Rounds</h2>
-<ul class="rounds">
-    <li *ngFor="let round of rounds">
-      <a routerLink="/detail/{{round.id}}">
-        <span class="badge">{{round.id}}</span> {{round.name}}
-      </a>
-      <button class="delete" title="delete round" (click)="delete(round)">x</button>
-    </li>
-</ul>
+
 <div>
   <label>
     <input #roundName />
@@ -16,3 +9,13 @@
     Add
   </button>
 </div>
+
+<ul class="rounds">
+    <li *ngFor="let round of rounds">
+      <a routerLink="/detail/{{round.id}}">
+        <span class="badge">{{round.id}}</span> {{round.name}}
+      </a>
+      <button class="delete" title="delete round" (click)="delete(round)">x</button>
+    </li>
+</ul>
+
